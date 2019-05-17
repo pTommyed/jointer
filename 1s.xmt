@@ -1,0 +1,30 @@
+; C:\Users\xkadj\OneDrive\PROJEKTY\Projekt_ROBOTIKA\joiter\1s.xmt
+; CAN messages saved by PCAN-View 4.2.0
+;
+; Columns descriptions:
+; ~~~~~~~~~~~~~~~~~~~~~
+; +Message ID
+; |            +Cycle time in ms (0=manual)
+; |            |  +Data length
+; |            |  |  +Frame type
+; |            |  |  |  +Message data
+; |            |  |  |  |
+410h        1000  8  D 01h 02h 03h 04h 05h 00h 01h 00h  Paused
+015h           0  8  D 00h 00h 00h 00h 00h 00h 00h 00h
+000h           0  2  D 01h 20h ; operation
+000h           0  2  D 01h 00h ; operational-broadcast
+000h           0  2  D 80h 20h ; pre-operational
+000h           0  2  D 81h 20h ; reset
+000h           0  2  D 02h 20h ; stop
+000h           0  2  D 03h 20h ; test
+220h           0  1  D 01h ; LED on
+220h           0  1  D 00h ; LED off
+000h           0  8  D 00h 00h 00h 00h 00h 00h 00h 00h
+220h           0  6  D 00h 00h 00h FFh FFh FFh ; DO
+220h           0  6  D 00h 00h 00h 00h 00h 00h ; DO
+00000000h      0  8  D 00h 05h 00h 00h 7Ah 7Dh 02h 04h ; Voda22
+326h           0  8  D 00h 05h 00h 00h 7Ah 7Dh 02h 04h ; Voda
+00000900h      0  8  D 00h 00h 00h 00h FFh FCh 00h 02h
+00000102h    200  4  D 00h 00h 03h B4h  Paused
+00000102h    200  4  D 00h 00h 00h 00h  Paused
+00000102h    200  4  D FFh FFh FCh 4Bh  Paused

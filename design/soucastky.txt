@@ -1,0 +1,25 @@
+D1 – Voltmetr:
+https://arduino-shop.cz/arduino/1709-digitalni-voltmetr-a-ampermetr-dc-100v-10a.html
+alternativně: https://www.bmshop.eu/p/digitalni-voltmetr-6-30v-modry
+SH1 – vačkový spínač
+https://www.tme.eu/cz/details/gx2010u25/vackove-spinace/lovato-electric/
+Z1 – nabíjecí zásuvka
+https://www.tme.eu/cz/details/xt60e-m/konektory-dc/amass/
+FU01 - pojistka T0,5A
+https://www.gme.cz/pojistka-trubickova-t-500ma-5x20
+FU02 – pojistka 6A gG
+https://www.e1.cz/produkt/1181963--pojistka-valcova-oez-pva10-6a-gg?
+gclid=CjwKCAjwiN_mBRBBEiwA9N-e_icJkXwmCHOLWmM_qdGLnO7iMxmfOVcbtsSgJijiILY-
+_HFQYdlgIhoCWpcQAvD_BwE&t=popis
+FA1 – jistič C10/2
+GU01 – převodník 24/12VDC
+https://arduino-shop.cz/arduino/1303-stepdown-nastavitelny-menic-s-lm2596-dc-dc.html?
+
+gclid=CjwKCAjwiN_mBRBBEiwA9N-
+e_it3PREnJo9KVhASe1qs4ddjVi05ETli0pU0tDQT_ellJDZ9jqBbmxoCahQQAvD_BwE
+
+B1-4 – baterie 12V ?
+https://www.battery-import.cz/rada-otl-12v/trakcni--agm--baterie-goowei-otl14-12--14ah--12v/
+https://www.tme.eu/cz/details/accu-bpe12-12_bp/kyselinove-akumulatory/bpower/bpe-12-12-t2/
+Balancér ??
+https://www.battery-import.cz/balancery-2/balancer-equalizer-pro-2x12v-baterie-ha01/
