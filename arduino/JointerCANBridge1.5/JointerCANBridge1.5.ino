@@ -87,13 +87,13 @@ void setup() {
     delay(100);
   }
 
-  Timer3.start(25000); // Calls every 50 ms
+  Timer3.start(50000); // Calls every 50 ms
 }
 
 
 void loop() {
   ButtonRead();
-  if (Timer3Over = true){
+  if (Timer3Over == true){
     //Serial.println(STOpSTARt);
     CountCycle();
     SendButtonStatusAPU();
