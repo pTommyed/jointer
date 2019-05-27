@@ -87,7 +87,7 @@ void setup() {
     delay(100);
   }
 
-  Timer3.start(100000); // Calls every 50 ms
+  Timer3.start(25000); // Calls every 50 ms
 }
 
 
