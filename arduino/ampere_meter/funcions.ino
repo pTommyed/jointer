@@ -15,7 +15,7 @@ float proud20A (byte pin) {
 
   CurrentSouc = CurrentSouc / 10;
  
-  Current = CurrentSouc * (5.0 / 1023.0);
+  Current = CurrentSouc * (5.0 / 1024.0);
   Current = Current - (2.5); // Pro 0 A sonda vraci 2.5 V
   Current = Current * 10.0; // Protoze je 100 mV/A
 
