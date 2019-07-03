@@ -1,5 +1,5 @@
 
-/*verze z bufrem příchozích zpráv*/
+/*verze bez bufru příchozích zpráv a překlad realizován odečítáním adres*/
 
 #include <mcp_can.h>
 #include <DueTimer.h>
@@ -59,8 +59,7 @@ bool Timmer4End = false;
 bool Timer3Over = false; //indikace přetečení timeru3
 
 void setup() {
-  ClearMessageBuffer();
-  
+ 
   Serial.begin(250000);
 
   pinMode(ledPin, OUTPUT);
@@ -91,7 +90,7 @@ void setup() {
     delay(100);
   }
 
-  Timer3.start(5); // Calls every 5 ms
+  Timer3.start(50000); // Calls every 50 mikros (20 Hz)
 }
 
 
@@ -101,7 +100,9 @@ void loop() {
     //Serial.println(STOpSTARt);
     CountCycle();
     SendButtonStatusAPU();
-    CAN_MESSAGE_SenD();
+    if (STOpSTARt == true) {
+      STOP();
+    }
     Timer3Over = false;
   }
   if(CAN_MSGAVAIL == CAN.checkReceive()) {  
