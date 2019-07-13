@@ -1,11 +1,15 @@
 
-/*verze bez bufru příchozích zpráv a překlad realizován odečítáním adres
- verze pro K1*/
+/*verze bez bufru příchozích zpráv a překlad realizován tabulkou*/
+/* verze pro K2*/
 
 #include <mcp_can.h>
 #include <DueTimer.h>
 
-const int ledPin =  A0;
+//const int ledPin =  A0; // for K1 is A0 led pin
+const int ledPin = 10; // for K2 is pin 10 led pin
+const int stop_led = 11; // for K2
+const int break_led = 12; // for K2
+
 const int Syrena = 8;
 
 
@@ -36,12 +40,21 @@ int CANAdressSendTable[12][2]={{17,257},//{přijatá hodntoa,přeposílaná hodn
                               {51,771},
                               {52,772}};*/
 
+int can_adress_tabel[2310];
+
 byte currentOFF[4]={0,0,0,0}; // tohle chce reverzovat, ma to znamenat 0mA
 byte currentREVERS[4]={0,0,250,0}; // brzdící proud  
+byte current_no_brake[4]={0,0,100,0}; // no brake current
 
 bool STOpSTARt = true; //pokud je nastaven na true je stop
 byte StopButton = 24;
 bool digitRead = false;
+
+bool brake_control = true; // pokud je nastaven na true tak brzdí
+byte control_break = 26; // for K2
+bool digit_read_brake = false;
+
+byte stop_xbee = 22; // for K2
 
 bool Timmer4End = false;
 
@@ -53,11 +66,16 @@ void setup() {
 
   pinMode(ledPin, OUTPUT);
   pinMode(Syrena,OUTPUT); //syrena
+  pinMode(stop_led, OUTPUT);
+  pinMode(break_led, OUTPUT);
   
   digitalWrite(ledPin, LOW);
   digitalWrite(Syrena, LOW);
+  ButtonRead();
+  brake_button_read();
 
   pinMode(StopButton,INPUT_PULLUP);
+  pinMode(control_break,INPUT_PULLUP);
    
   Serial.println("Setup can..");
   while(CAN.begin(CAN_500KBPS, MCP_8MHz) != CAN_OK){
@@ -66,6 +84,8 @@ void setup() {
     delay(1000);
   }
   Serial.print("\nCAN init ok!!\r\n");
+
+  can_message_init();
 
   LEDIndicator ();
 
@@ -85,6 +105,7 @@ void setup() {
 
 void loop() {
   ButtonRead();
+  brake_button_read();
   if (Timer3Over == true){
     //Serial.println(STOpSTARt);
     CountCycle();

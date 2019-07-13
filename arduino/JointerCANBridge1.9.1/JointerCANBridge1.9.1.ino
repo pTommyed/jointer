@@ -1,11 +1,12 @@
 
-/*verze bez bufru příchozích zpráv a překlad realizován odečítáním adres
- verze pro K1*/
+/*verze bez bufru příchozích zpráv a překlad realizován tabulkou*/
+/* verze pro K1*/
 
 #include <mcp_can.h>
 #include <DueTimer.h>
 
 const int ledPin =  A0;
+
 const int Syrena = 8;
 
 
@@ -35,6 +36,8 @@ int CANAdressSendTable[12][2]={{17,257},//{přijatá hodntoa,přeposílaná hodn
                               {50,770},
                               {51,771},
                               {52,772}};*/
+
+int can_adress_tabel[2310];
 
 byte currentOFF[4]={0,0,0,0}; // tohle chce reverzovat, ma to znamenat 0mA
 byte currentREVERS[4]={0,0,250,0}; // brzdící proud  
@@ -66,6 +69,8 @@ void setup() {
     delay(1000);
   }
   Serial.print("\nCAN init ok!!\r\n");
+
+  can_message_init();
 
   LEDIndicator ();
 
