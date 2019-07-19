@@ -44,7 +44,7 @@ int can_adress_tabel[2310];
 
 byte currentOFF[4]={0,0,0,0}; // tohle chce reverzovat, ma to znamenat 0mA
 byte currentREVERS[4]={0,0,250,0}; // brzdící proud  
-byte current_no_brake[4]={0,0,100,0}; // no brake current
+byte current_no_brake[4]={0,0,0,0}; // no brake current
 
 bool STOpSTARt = true; //pokud je nastaven na true je stop
 byte StopButton = 24;

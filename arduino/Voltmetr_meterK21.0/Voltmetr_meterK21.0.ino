@@ -1,27 +1,32 @@
-/*modul - měří proud, odpor na potaku na K1*/
+/* modul - měří naoětí 12V, 36V, odpor na potaku - K2*/
 
 #include <TimerOne.h>
+
+float R1_12 = 470000.0; //  
+float R2_12 = 220000.0; //
+float R1_36 = 674000.0; //  
+float R2_36 = 67000.0; //
+
 #include <mcp_can.h>
-
-float celk_proud; // proud v obvodu se zatezi
-
-const int led = 8;
 
 MCP_CAN CAN(10);
 int           CANmessageID;
 unsigned char len = 0;
-byte buf_current[3]={0,0,0};
+byte buf_voltage12[4]={0,0,0,0};
+byte buf_voltage36[4]={0,0,0,0};
 byte buf_resistance[4] = {0,0,0,0};
 
-int can_adress_current = 112;  //70 hexa
 int can_adress_resistance = 128; //80 hexa
+int can_adress_voltage12 = 129;  //81 hexa
+int can_adress_voltage36 = 130;  //82 hexa
 
-unsigned int resist_potnciometr = 0; 
+unsigned int resist_potnciometr = 0;
+float voltage12 = 0.0; 
+float voltage36 = 0.0; 
 
-const int potenciometr_pin = A1;
-const int current_pin = A0;
-
-bool Timmer1End = false;
+const int potenciometr_pin = A0;
+const int voltege12_pin = A2;
+const int voltege36_pin = A1;
 
 bool timmer_flag = false;
 
@@ -32,25 +37,13 @@ void setup(){
     ; // ceka dokud neni pripojena seriova linka
     }
 
-  pinMode(led, OUTPUT);
-
   Serial.println("Setup can..");
   while(CAN.begin(CAN_500KBPS, MCP_8MHz) != CAN_OK){
-    digitalWrite(led,HIGH);
     Serial.print(".");
     delay(1000);
   }
   Serial.print("\nCAN init ok!!\r\n");
 
-  Timer1.attachInterrupt(BeepDown);
-  
-  BeepUP ();
-  
-  while(Timmer1End != true){
-    delay(100);
-  }
-  digitalWrite(led, LOW);
-  
   Timer1.initialize(50000);
   Timer1.attachInterrupt(timer_overflow);
 
@@ -59,10 +52,13 @@ void setup(){
 }
 void loop(){
   if (timmer_flag == true) {
-   celk_proud = proud20A (current_pin);
+   voltage12 =  Voltage (voltege12_pin,R1_12, R2_12);
+   voltage36 =  Voltage (voltege36_pin,R1_36, R2_36);
    timmer_flag = false;
-   current_message();
-   CAN.sendMsgBuf(0x00 + can_adress_current, 0, 3, buf_current);
+   voltage_message12();
+   CAN.sendMsgBuf(0x00 + can_adress_voltage12, 0, 4, buf_voltage12);
+   voltage_message36();
+   CAN.sendMsgBuf(0x00 + can_adress_voltage36, 0, 4, buf_voltage36);
    resist_potnciometr = potenciomter(potenciometr_pin);
    resistance_message();
    CAN.sendMsgBuf(0x00 + can_adress_resistance, 0, 4, buf_resistance);
