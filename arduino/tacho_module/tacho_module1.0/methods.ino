@@ -24,27 +24,31 @@ void ClearBuffer ()
 /*--------------------------- Přijatá zpráva CAN----------------------------------------------------------------------------------*/
 
 void CAN_MESSAGE_ReceiveD(){
-  int can_adress;
-  if (CANmessageID > 2304){
-    can_adress = (CANmessageID - 2304)+144;
-    CAN.sendMsgBuf(0x0+can_adress, 0, 8, buf);
-  }else {
-    if (STOpSTARt == false){
-      if (CANmessageID < 60){
-          if (CANmessageID > 48){
-            can_adress = (CANmessageID - 48)+768;
-            CAN.sendMsgBuf(0x00000+can_adress, 1, 4, buf);
-          } else if (CANmessageID > 32) {
-              can_adress = (CANmessageID - 32)+512;
-              CAN.sendMsgBuf(0x00000+can_adress, 1, 4, buf);
-            } else if (CANmessageID > 16) {
-                  can_adress = (CANmessageID - 16)+256;
-                  CAN.sendMsgBuf(0x00000+can_adress, 1, 4, buf);
-              }
-      }    
+  int vesc_number;
+  int j = 6;
+  
+  if (CANmessageID > 1280 && CANmessageID < 1285){
+    if (buf[0] == 42){
+      vesc_number = CANmessageID - 1281;
+      for (int i=tacho_bufer_index_tabel[vesc_number]; i<(tacho_bufer_index_tabel[vesc_number]+2);i++ ) {
+        tacho_buf[i]= buf[j];
+        j++; 
+      }
     }
   }
   ClearBuffer();
 }
 
+/*-------------------------- Probuzeni arduina od interniho preruseni ----------------*/
 
+void TimerInterrupt () {
+  Timer3Over = true;
+}
+
+/*-------------------------- Sending request via CAN to vesc for tacho -------------------------*/
+
+void sending_tacho_request() {
+  for (int i=1793;i<1797;i++){
+    CAN.sendMsgBuf(0x00000+i, 1, 8, request_buf);
+  }
+}
