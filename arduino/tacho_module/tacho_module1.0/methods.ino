@@ -48,7 +48,11 @@ void TimerInterrupt () {
 /*-------------------------- Sending request via CAN to vesc for tacho -------------------------*/
 
 void sending_tacho_request() {
-  for (int i=1793;i<1797;i++){
+  int vesc_id;
+  
+  for (int i=2049;i<2053;i++){
+    vesc_id = i-2049+1;
+    request_buf[0] = vesc_id;
     CAN.sendMsgBuf(0x00000+i, 1, 8, request_buf);
   }
 }

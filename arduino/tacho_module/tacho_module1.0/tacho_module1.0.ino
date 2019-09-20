@@ -10,7 +10,7 @@ int  CANmessageID;
 unsigned char len = 0;
 byte buf[8];
 byte tacho_buf[8];
-byte request_buf[8] = {}; //!!!!!!!!!!!!!! doplnit
+byte request_buf[3] = {0,0,4}; //!!!!!!!!!!!!!! doplnit
 
 int tacho_bufer_index_tabel[4]={0,2,4,6};
 
@@ -22,7 +22,6 @@ void setup() {
 
   Serial.println("Setup can..");
   while(CAN.begin(CAN_500KBPS, MCP_8MHz) != CAN_OK){
-    digitalWrite(stop_led, HIGH);
     Serial.print(".");
     delay(1000);
   }
@@ -37,7 +36,7 @@ void setup() {
 
   Timer3.attachInterrupt(TimerInterrupt);
 
-  Timer3.start(1000000000); // Calls every 100 mili
+  Timer3.start(1000000000); // Calls every 100 mili !!!!!!!!!!!!!!!!! doplnit
 }
 
 void loop() {
