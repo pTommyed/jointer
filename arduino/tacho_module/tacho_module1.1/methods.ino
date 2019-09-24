@@ -23,19 +23,32 @@ void ClearBuffer ()
 
 /*--------------------------- Přijatá zpráva CAN----------------------------------------------------------------------------------*/
 
-void CAN_MESSAGE_ReceiveD(){
+void CAN_MESSAGE_ReceiveD(){  
+  if (buf[0] == 42){
+    can_message_parse();
+    
+  } else while (!digitalRead(CAN0_INT)) {                         // If CAN0_INT pin is low, read receive buffer
+      CAN.readMsgBuf(&len, buf);
+      if (buf[0] == 42){
+        can_message_parse();
+      }
+    }
+}
+
+/*--------------------------- Pars can zprávy----------------------------------------------------------------------------------*/
+
+void can_message_parse(){
   int vesc_number;
   int j = 6;
   
+  CANmessageID = CAN.getCanId();
   if (CANmessageID > 1280 && CANmessageID < 1285){
-    if (buf[0] == 42){
       vesc_number = CANmessageID - 1281;
       for (int i=tacho_bufer_index_tabel[vesc_number]; i<(tacho_bufer_index_tabel[vesc_number]+2);i++ ) {
         tacho_buf[i]= buf[j];
         j++; 
       }
     }
-  }
   ClearBuffer();
 }
 
