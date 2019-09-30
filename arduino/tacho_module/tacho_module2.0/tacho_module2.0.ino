@@ -1,6 +1,9 @@
 #include <mcp_can.h>
 #include <DueTimer.h>
 
+byte fifo_Head = 0;
+const byte rx_can_interrupt_pin = 3;
+
 int CANvescID[4] = {1,2,3,4};  // ID jednotlivých motorů
 
 MCP_CAN CAN(2);
@@ -19,6 +22,8 @@ bool Timer3Over = false; //indikace přetečení timeru3
 void setup() {
  
   Serial.begin(250000);
+
+  pinMode(rx_can_interrupt_pin,INPUT);
 
   Serial.println("Setup can..");
   while(CAN.begin(CAN_500KBPS, MCP_8MHz) != CAN_OK){
@@ -39,22 +44,33 @@ void setup() {
 
   Timer3.start(100000); // Calls every 100 ms
 
+  attachInterrupt(rx_can_interrupt_pin, rx_can_interrupt, FALLING);
+
   Serial.println("Inicializace OK");
 }
 
 void loop() {
+  for (int i = 0; i < buffer.size(); i++) {
+    if (buffer[i]>2049){
+      CANmessageID = buffer[i];
+      buffer[i] = 0;
+      for (int i = 0; i < buffer.size(); i++){
+        
+      }
+    }
+  }
   if (Timer3Over == true){
     CAN.sendMsgBuf(0x0+can_adress_transmit, 0, 8, tacho_buf); // sending tacho infos to APU
     sending_tacho_request(); // sending request to vescs
     Timer3Over = false;
   }
   
-  if(CAN_MSGAVAIL == CAN.checkReceive()) {  
+  /*if(CAN_MSGAVAIL == CAN.checkReceive()) {  
     CAN.readMsgBuf(&len, buf);
     CANmessageID = CAN.getCanId();
     Serial.println(CANmessageID);
     CANmsgToSerial();
     CAN_MESSAGE_ReceiveD();
   }
-  //Serial.println("in loop");
+  //Serial.println("in loop");*/
 }

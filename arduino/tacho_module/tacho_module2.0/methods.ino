@@ -56,3 +56,10 @@ void sending_tacho_request() {
     CAN.sendMsgBuf(0x00000+i, 1, 3, request_buf);
   }
 }
+
+/*-------------------------- Detecting of incoming can message -------------------------*/
+
+void rx_can_interrupt () {
+  CAN.readMsgBuf(&len,fifo_Head, buf);
+  }
+}
