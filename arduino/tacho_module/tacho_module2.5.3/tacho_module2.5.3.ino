@@ -1,4 +1,4 @@
-// verze -- testováno 4.10.19
+// verze -- if statement for vesc canID
 
 #include <mcp_can.h>
 #include <DueTimer.h>
@@ -23,7 +23,7 @@ unsigned char len = 0;
 byte tacho_buf[8] = {0,0,0,0,0,0,0,0};
 byte request_buf[3] = {0,0,4}; 
 
-int tacho_bufer_index_tabel[4]={0,2,4,6};
+//int tacho_bufer_index_tabel[4]={1,3,5,7};
 
 bool Timer3Over = false; //indikace přetečení timeru3
 
