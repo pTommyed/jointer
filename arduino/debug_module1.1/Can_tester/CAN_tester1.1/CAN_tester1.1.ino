@@ -64,14 +64,12 @@ void loop() {
   if (timmer_flag == true) {
     //Serial.println(timmer_flag);
     timer_service();
-    //led_reset();
-    //Serial.println(timmer_flag);
-    //detection_missing_module();
-    //sending_message_to_apu();
-    //CAN_filter_standard_initial(); 
+    /*led_reset();
+    detection_missing_module();
+    sending_message_to_apu();
+    missing_module_status_reset();*/
     if (cycle_count == 1) {
       CAN_filter_standard_vesc_initial();
-      //delay(300);
     } else if (cycle_count == 2) {
               //CAN_filter_extended_initial();
               CAN_filter_standard_initial();
@@ -79,13 +77,7 @@ void loop() {
               detection_missing_module();
               sending_message_to_apu();
               missing_module_status_reset();
-              //delay(300);
-            }
-    //MCUSR &= ~(1 << WDRF);                           // reset watch dog
-    //Serial.println(timmer_flag);
-    //SPCR = SPCR | 0x80;
-    //WDT_1s();
-    //SPCR = 1010000;
+             }
   }
   if(CAN.readMsgBuf(&len, buf)== CAN_OK) {  
     CANmessageID = CAN.getCanId();
@@ -118,7 +110,8 @@ void CAN_MASK_initial(){
   /*CAN.init_Mask(0, 1, 0x3ffff); //filtruje extended zprávy a nekomtroluje první dva bajty adresy CAN.init_Mask(0, 1, 0x3ff00);
   CAN.init_Mask(0, 1, 0x3ffff); // CAN.init_Mask(0, 1, 0x3ffff) filtruje extended a kontorluje všechny bjaty adresy
   */
-   CAN.init_Mask(0, 0, 0x7ff); //filtruje extended zprávy a nekomtroluje první dva bajty adresy CAN.init_Mask(0, 1, 0x3ff00);
+   //CAN.init_Mask(0, 0, 0x700); //filtruje extended zprávy a nekomtroluje první dva bajty adresy CAN.init_Mask(0, 1, 0x3ff00);
+  CAN.init_Mask(0, 0, 0x7ff); //filtruje extended zprávy a nekomtroluje první dva bajty adresy CAN.init_Mask(0, 1, 0x3ff00);
   CAN.init_Mask(1, 0, 0x7ff); // CAN.init_Mask(0, 1, 0x3ffff) filtruje extended a kontorluje vše
 }
 
@@ -226,8 +219,8 @@ void knight_rider_led_test (){
 void CAN_message_received(){
   int can_adress_pom=30;
   Serial.println( CANmessageID);
-  if ((CANmessageID > 2304) && (CANmessageID < 2311)){
-    can_adress_pom = CANmessageID - 2305;
+  if ((CANmessageID > 144) && (CANmessageID < 151)){
+    can_adress_pom = CANmessageID - 145;
     adress_tabel[can_adress_pom][4]=1;
   }else {
       if (CANmessageID < 132){
