@@ -5,7 +5,7 @@
 //####################################################
 
 
-// DESCRTIPTION: -  version for K3 robot 
+// DESCRTIPTION: -  version for K1 and K2 robots 
 //               -  no tested
 //               -  20 Hz - sampling frequency
 //               -  timer1 registrs
