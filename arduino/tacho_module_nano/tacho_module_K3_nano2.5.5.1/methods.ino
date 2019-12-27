@@ -2,7 +2,7 @@
 void serial_initial(){
   Serial.begin(250000); 
   while (!Serial) {
-    ; // ceka dokud neni pripojena seriova linka
+    ; 
     }
 }
 
@@ -29,7 +29,7 @@ void CAN_filters_initial(){
   CAN.init_Filt(2, 1, 0x00000503);
   CAN.init_Filt(3, 1, 0x00000504);
   CAN.init_Filt(4, 1, 0x00000505);
-  CAN.init_Filt(4, 1, 0x00000506);
+  CAN.init_Filt(5, 1, 0x00000506);
 }
 
 /*--------------------------- Tacho service----------------------------------------------------------------------------------*/

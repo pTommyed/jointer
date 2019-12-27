@@ -1,20 +1,21 @@
 //####################################################
-//#    KLOUBAK: Tacho Module 2.5.5.1
+//#    KLOUBAK: Tacho Module K3 2.5.5.1
 //#    Copyright (c) 2019 ROBOTIKA
 //#    programmed by: Tomas Picha, Martin Dlouhy
 //####################################################
 
-// timer1 registrs  
+
 // DESCRTIPTION: -  version for K3 robot 
 //               -  no tested
 //               -  20 Hz - sampling frequency
+//               -  timer1 registrs  
 // HW: Aruino Nano, MCP2515+TJA1050 CAN module
 
 // version -- if statement for vesc canID and new tacho_buf indexing and timer change to 20 Hz
 
 /*----------------------- DEPENDENCES ----------------------------------*/
 #include <mcp_can.h>
-#include <SPI.h> // knihovna for SPI bus
+#include <SPI.h> // lib for SPI bus
 
 /*----------------------- DEFINITION -----------------------------------*/
 const int can_vesc_count = 6; // count of vescs on the robot
