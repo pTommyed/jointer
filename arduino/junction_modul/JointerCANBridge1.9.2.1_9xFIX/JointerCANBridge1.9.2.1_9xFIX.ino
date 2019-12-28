@@ -27,9 +27,9 @@
 #include <mcp_can.h>
 #include <DueTimer.h>
 
-const int stop_led = 10;  // RED
+const int stop_led = 11;  // RED
 const int break_led = 12; // BLUE
-const int ledPin = 11;    // GREEN
+const int ledPin = 10;    // GREEN
 const int Syrena = 8;
 
 byte stop_xbee = 22; // for K2

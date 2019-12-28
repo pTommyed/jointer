@@ -69,10 +69,10 @@ void loop() {
     sending_message_to_apu();
     missing_module_status_reset();*/
     if (cycle_count == 1) {
-      CAN_filter_standard_vesc_initial();
+      //CAN_filter_standard_vesc_initial();
     } else if (cycle_count == 2) {
               //CAN_filter_extended_initial();
-              CAN_filter_standard_initial();
+              //CAN_filter_standard_initial();
               led_reset();
               detection_missing_module();
               sending_message_to_apu();
@@ -112,18 +112,18 @@ void CAN_MASK_initial(){
   */
    //CAN.init_Mask(0, 0, 0x700); //filtruje extended zprávy a nekomtroluje první dva bajty adresy CAN.init_Mask(0, 1, 0x3ff00);
   CAN.init_Mask(0, 0, 0x7ff); //filtruje extended zprávy a nekomtroluje první dva bajty adresy CAN.init_Mask(0, 1, 0x3ff00);
-  CAN.init_Mask(1, 0, 0x7ff); // CAN.init_Mask(0, 1, 0x3ffff) filtruje extended a kontorluje vše
+  CAN.init_Mask(1, 1, 0x1fffffff); // CAN.init_Mask(0, 1, 0x3ffff) filtruje extended a kontorluje vše
 }
 
 /*-----------------------CAN-filter-standard_vesc-initialization--------------------------------*/
 void CAN_filter_standard_vesc_initial(){ 
   
-  CAN.init_Filt(0, 1, 0x0145);  //901
-  CAN.init_Filt(1, 1, 0x0146);
-  CAN.init_Filt(2, 1, 0x0147); //903
-  CAN.init_Filt(3, 1, 0x0148);
-  CAN.init_Filt(4, 1, 0x0149);
-  CAN.init_Filt(5, 1, 0x0150);
+  CAN.init_Filt(0, 1, 0x01450000);  //901
+  CAN.init_Filt(1, 1, 0x01460000);
+  CAN.init_Filt(2, 1, 0x01470000); //903
+  CAN.init_Filt(3, 1, 0x01480000);
+  CAN.init_Filt(4, 1, 0x01490000);
+  CAN.init_Filt(5, 1, 0x01500000);
 }
 
 /*-----------------------CAN-filter-extended-initialization--------------------------------*/
@@ -145,12 +145,19 @@ void CAN_filter_standard_initial(){
   CAN.init_Mask(1, 0, 0x07ff); // CAN.init_Mask(0, 1, 0x3ffff) filtruje extended a kontorluje všechny bjaty adresy
   */
      
-  CAN.init_Filt(0, 0, 0x01);  //901
+  CAN.init_Filt(0, 0, 0x01);  //0x1
+  CAN.init_Filt(1, 0, 0x71);
+  CAN.init_Filt(2, 0, 0x81); //903
+  CAN.init_Filt(3, 0, 0x81);
+  CAN.init_Filt(4, 0, 0x01);
+  CAN.init_Filt(5, 0, 0x01);
+
+  /*CAN.init_Filt(0, 0, 0x0020);  //0x1
   CAN.init_Filt(1, 0, 0x071);
   CAN.init_Filt(2, 0, 0x072); //903
   CAN.init_Filt(3, 0, 0x081);
   CAN.init_Filt(4, 0, 0x082);
-  CAN.init_Filt(5, 0, 0x093);
+  CAN.init_Filt(5, 0, 0x093);*/
 }
 
 /*-------------------------- SyrenaUP ------------------------------------------------------------------------------*/
