@@ -48,7 +48,7 @@ void setup() {
 
   Timer3.attachInterrupt(TimerInterrupt);
 
-  Timer3.start(200000); // Calls every 200 ms 20 Hz
+  Timer3.start(50000); // Calls every 20 Hz
 
   Serial.println("Inicializace OK");
 }

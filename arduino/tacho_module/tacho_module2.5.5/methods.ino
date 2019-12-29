@@ -25,6 +25,9 @@ void can_message_processing(int vesc_id) {
       if (buf[0]==42 && CAN.getCanId()==(CANvescID[vesc_id]+1280)){  
         create_tacho_buf_apu(vesc_id);
       }
+      if (len < 8 && CAN.getCanId()==(CANvescID[vesc_id]+1280)){  
+        break;
+      }
       if (Timer3Over == true){
           break;
       }

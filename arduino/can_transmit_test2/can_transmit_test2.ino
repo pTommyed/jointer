@@ -17,14 +17,13 @@ void setup() {
 }
 
 void loop() {
+  
     for (int i=1;i<9;i++){
      byte buf[i];
-     for(int j=0;j<i;j++){
+     for(int j=0;j<8;j++){
       buf[j]=j;
       //Serial.print(buf[j]);
      }
-     //Serial.println("");
-     CAN.sendMsgBuf(0x0+i, 0, i, buf);
-     //delay(1000);
-  }
+     CAN.sendMsgBuf(0x0+(i-1), 0, i, buf);
+    }
 }
