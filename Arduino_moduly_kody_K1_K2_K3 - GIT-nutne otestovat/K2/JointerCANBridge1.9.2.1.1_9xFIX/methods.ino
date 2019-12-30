@@ -1,3 +1,68 @@
+/*-----------------------Serial initialization--------------------------------*/
+void serial_initial(){
+  Serial.begin(250000); 
+  while (!Serial) {
+    ; 
+    }
+}
+
+/*-----------------------pin mode initialization--------------------------------*/
+void pin_mode_initial(){
+  pinMode(ledPin, OUTPUT);
+  pinMode(Syrena,OUTPUT); //buzzer
+  pinMode(stop_led, OUTPUT);
+  pinMode(break_led, OUTPUT);
+
+  pinMode(StopButton,INPUT_PULLUP);
+  pinMode(control_break,INPUT_PULLUP);
+}
+
+/*-----------------------pin out setting--------------------------------*/
+void pin_out_setting(){
+  digitalWrite(ledPin, LOW);
+  digitalWrite(Syrena, LOW);
+}
+
+/*-------------------------- initialize timer3 and 4 ------------------------------------------*/
+void timer3_4_initial(){
+  Timer3.attachInterrupt(TimerInterrupt);
+  Timer4.attachInterrupt(BeepDown);
+}
+
+/*-----------------------CAN initialization--------------------------------*/
+void CAN_initial(){
+  Serial.println("Setup can..");
+  while(CAN.begin(CAN_500KBPS, MCP_8MHz) != CAN_OK){
+    digitalWrite(stop_led, HIGH);
+    Serial.print(".");
+    BeepUP();
+    delay(1000);
+  }
+  Serial.print("\nCAN init ok!!\r\n");
+}
+
+/*-----------------------waiting for timer4 overflow--------------------------------*/
+void waiting_for_timer4_overflow(){
+  while(Timmer4End != true){
+    delay(100);
+  }
+}
+
+/*-----------------------CAN Mask initialization--------------------------------*/
+void CAN_Mask_initial(){
+  CAN.init_Mask(0, 1, 0x0910); //CCAN.init_Mask(0, 1, 0x00000910); //CAN.init_Mask(0, 1, 0x06FF0000);
+}
+
+/*-----------------------CAN filters initialization--------------------------------*/
+void CAN_filters_initial(){
+  CAN.init_Filt(0, 1, 0x00000901);
+  CAN.init_Filt(1, 1, 0x00000902);
+  CAN.init_Filt(2, 1, 0x00000903);
+  CAN.init_Filt(3, 1, 0x00000904);
+  CAN.init_Filt(4, 1, 0x00000905);
+  CAN.init_Filt(5, 1, 0x00000906);
+}
+/*-----------------------CANmessage print to serial--------------------------------*/
 void CANmsgToSerial(){
       Serial.println("-----------------------------------------");
       Serial.print("can address: ");
@@ -12,13 +77,13 @@ void CANmsgToSerial(){
       Serial.println("-----------------------------------------");
 }
 
-/*-------------------------- Probuzeni arduina od interniho preruseni ----------------*/
+/*-------------------------- Timer3 overflow ----------------*/
 
 void TimerInterrupt () {
   Timer3Over = true;
 }
 
-/*---------------------------Led indikace ----------------------------------------------------------------*/
+/*---------------------------Led indication ----------------------------------------------------------------*/
 void LEDIndicator () {
   for (int i=0; i <= 3; i++) {
       digitalWrite(ledPin, HIGH);
@@ -84,7 +149,7 @@ void brake_button_read(){
   }
 }
 
-/*---------------------------- Zašle stav tlačítek apu--------------------------------------------------------------------------*/
+/*---------------------------- Send buttons status to APU --------------------------------------------------------------------------*/
 
 void SendButtonStatusAPU() {
   byte messageStopButt[1];
@@ -97,7 +162,7 @@ void SendButtonStatusAPU() {
       }
 }
 
-/*--------------------------- Přijatá zpráva CAN----------------------------------------------------------------------------------*/
+/*--------------------------- received CAN message processing ----------------------------------------------------------------------------------*/
 
 void CAN_MESSAGE_ReceiveD(){
   int can_adress;
@@ -143,10 +208,9 @@ void CountCycle(){
   bufCount[0]= CycleCount;
   CAN.sendMsgBuf(0x02, 0, 1, bufCount);
   if (CycleCount==255){
-    CycleCount = 0;
+    CycleCount = 1;
   } else {
      CycleCount = CycleCount+1;
     }
   
 }
-
