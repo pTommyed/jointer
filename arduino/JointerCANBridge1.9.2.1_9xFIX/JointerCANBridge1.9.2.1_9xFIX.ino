@@ -88,13 +88,13 @@ void setup() {
    
   while(Timmer4End != true){
     delay(100);
-  }
    // pro jine verye aruduino }jinak nepreklada]  
   CAN.init_Mask(0, 1, 0x00000910); //CAN.init_Mask(0, 1, 0x06FF0000);
   CAN.init_Filt(0, 1, 0x00000901);
   CAN.init_Filt(1, 1, 0x00000902);
   CAN.init_Filt(2, 1, 0x00000903);
   CAN.init_Filt(3, 1, 0x00000904);
+  }
 
   Timer3.start(50000); // Calls every 50 mikros (20 Hz)
 }

@@ -9,16 +9,16 @@
 //               -  20 Hz - sampling frequency
 //               -  module measure voltage - 12, 36V and angle of rotation (analog value)
 //               -  refactoring of version - Voltmetr_meterK21.0 + new update for K3
-// HW: Aruino Nano, DOPSAT NAZEV SENZORU PRO MERENI UHLU, MCP2515+TJA1050 CAN module
+//               -  angle sensors (I2C) - update
+// HW: Aruino Nano, 2 x AS5048A(angle sensors), MCP2515+TJA1050 CAN module
 
 /*----------------------- DEPENDENCES ----------------------------------*/
 #include <TimerOne.h>
 #include <mcp_can.h>
+#include <Wire.h>
 
 /*----------------------- DEFINITION -----------------------------------*/
 MCP_CAN CAN(10);
-const int angle_front_pin = A0; //potenciometr_pin
-const int angle_back_pin = A3; //potenciometr_pin -- číso pinu nutné ověřit !!!!
 const int voltege12_pin = A2;
 const int voltege36_pin = A1;
 
@@ -37,18 +37,25 @@ int can_adress_angles = 128; //80 hexa
 int can_adress_voltage12 = 129;  //81 hexa
 int can_adress_voltage36 = 130;  //82 hexa
 
-unsigned int analog_value_angle_front = 0; //resist_potnciometr
-unsigned int analog_value_angle_back = 0; //resist_potnciometr
+byte sensor1_i2c_adrress = 64; // 0x40
+byte sensor2_i2c_adrress = 65; // 0x41
+
+byte angle_254 = 0;
+byte angle_255 = 0;
+
 float voltage12 = 0.0; 
 float voltage36 = 0.0; 
 
 bool timmer_flag = false;
+byte WDT_overflow_count = 0;
 
 /*----------------------- SETUP ----------------------------------------*/
 void setup(){
   serial_initial();
   CAN_initial();
-  timer1_init();
+  I2C_initial();
+  I2C_scanner();
+  WSDT_16ms();
   Serial.println("initialization successfully done!");
 
 }

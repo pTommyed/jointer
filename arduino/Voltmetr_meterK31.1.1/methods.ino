@@ -1,3 +1,33 @@
+/*----------------------I2C-initialization------------------------------------*/
+void I2C_initial(){
+  Wire.begin();
+  Wire.setClock(400000);     // use 400 kHz I2C
+}
+/*----------------------I2C-scanner------------------------------------*/
+void I2C_scanner()
+{
+  Serial.println ("I2C scanner. Scanning ...");
+  byte count = 0;
+  for (byte i = 1; i < 120; i++)
+  {
+    Wire.beginTransmission (i);
+    if (Wire.endTransmission () == 0)
+    {
+      Serial.print ("Found address: ");
+      Serial.print (i, DEC);
+      Serial.print (" (0x");
+      Serial.print (i, HEX);
+      Serial.println (")");
+      count++;
+      delay (1); 
+    }
+  }
+  Serial.println ("Done.");
+  Serial.print ("Found ");
+  Serial.print (count, DEC);
+  Serial.println (" device(s).");
+}
+
 /*----------------------Serial-initialization------------------------------------*/
 void serial_initial(){
   Serial.begin(250000); 
@@ -16,11 +46,13 @@ void CAN_initial(){
   Serial.print("\nCAN init ok!!\r\n");
 }
 
-/*-------------------------- initialize timer1 ------------------------------------------*/
+/*-------------------------- WDT 16 ms ------------------------------------------*/
 
-void timer1_init(){
-  Timer1.initialize(50000);
-  Timer1.attachInterrupt(timer_overflow);
+void WSDT_16ms(){
+  MCUSR &= ~(1 << WDRF);                           // reset watch dog
+  WDTCSR |= (1 << WDCE) | (1 << WDE);              // enable configuration of watch dog
+  WDTCSR = (0 << WDP0) | (0 << WDP1) | (0 << WDP2) | (0 << WDP3); // setting watch dog to 16 ms
+  WDTCSR |= (1 << WDIE);   // enable interrupt mode
 }
 
 /*---------------------- Voltage meassure ------------------------------------*/
@@ -48,10 +80,15 @@ float Voltage (byte pin,float resist1, float resist2) {
   return (voltage);
 }
 
-/*------------------------ timer1 - overflow -----------------------------------------------------*/
+/*-------------------------- WDT overflow ----------------*/
 
-void timer_overflow(){
-  timmer_flag = true;
+ISR( WDT_vect ) {
+  MCUSR &= ~(1 << WDRF); // reset watch dog
+  WDT_overflow_count ++;
+  if (WDT_overflow_count == 3) {
+    timmer_flag = true;
+    WDT_overflow_count = 0;
+  } 
 }
 
 /*----------------------- CAN Message voltage12V ------------------------------------------------------*/
@@ -86,16 +123,6 @@ void voltage_message36(){
   Serial.println("");
 }
 
-/*----------------------- create CAN Message angles ------------------------------------------------------*/
-
-void angles_message(){
-  buf_angles[0] =  (analog_value_angle_front >> 8) & 0xFF;
-  buf_angles[1] =  analog_value_angle_front & 0xFF;
-
-  buf_angles[2] =  (analog_value_angle_back >> 8) & 0xFF;
-  buf_angles[3] =  analog_value_angle_back & 0xFF;  
-}
-
 /*--------------------- power ----------------------------------------------------------------------*/
 
 float power (int ground ,int exponent) {
@@ -115,24 +142,33 @@ float power (int ground ,int exponent) {
 
 /*-------------------- angle measure -----------------------------------------------------------------*/
 
-unsigned int angle_measure (int pin) {
-unsigned int resistance = 0;
+void angle_measure (byte adrress) {
   
-  for (int i=0;i<16;i++) {
-    resistance = resistance + analogRead(pin);
-  }
-
-  /*Serial.print(" ");
-  Serial.println(resistance);
-  return(resistance);*/
+  Wire.beginTransmission(adrress);
+  
+  Wire.write(254);
+  Wire.requestFrom(adrress,1); //adrress i2c
+  angle_254 = Wire.read();
+  
+  Wire.write(255);
+  Wire.requestFrom(adrress,1);
+  angle_255 = Wire.read();
+  
+  Wire.endTransmission();
 }
 
 /*-------------------- angles measurement -----------------------------------------------------------------*/
 
 void angles_measurement () {
-  analog_value_angle_front = angle_measure(angle_front_pin);
-  analog_value_angle_back = angle_measure(angle_back_pin);
-  angles_message();
+
+  angle_measure(sensor1_i2c_adrress);
+  buf_angles[0] = angle_254;
+  buf_angles[1] = angle_255;
+
+  angle_measure(sensor2_i2c_adrress);
+  buf_angles[2] = angle_254;
+  buf_angles[3] = angle_255;
+  
 }
 
 /*-------------------- voltage measurement -----------------------------------------------------------------*/
