@@ -58,7 +58,7 @@ void setup() {
 void loop() {
   if (timmer_flag == true) {
     timer_service();
-    if (cycle_count == 2) {
+    if (cycle_count == 1) {
       led_reset();
       detection_missing_module();
       sending_message_to_apu();
