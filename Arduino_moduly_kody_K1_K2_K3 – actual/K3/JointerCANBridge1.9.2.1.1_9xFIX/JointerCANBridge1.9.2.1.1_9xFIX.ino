@@ -101,9 +101,6 @@ void setup() {
   BeepUP();
    
   waiting_for_timer4_overflow();
- 
-  CAN_Mask_initial();
-  CAN_filters_initial();
 
   Timer3.start(50000); // Calls every 50 mikros (20 Hz)
 }

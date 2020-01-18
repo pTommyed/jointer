@@ -1,5 +1,5 @@
 //####################################################
-//#    KLOUBAK: Tacho Module K3 2.5.5.1
+//#    KLOUBAK: Tacho Module K3 2.5.5.2
 //#    Copyright (c) 2019 ROBOTIKA
 //#    programmed by: Tomas Picha, Martin Dlouhy
 //####################################################
@@ -8,7 +8,8 @@
 // DESCRTIPTION: -  version for K3 robot 
 //               -  no tested
 //               -  20 Hz - sampling frequency
-//               -  timer1 registrs  
+//               -  timer1 registrs 
+//               -  new CAN_mask and filter settings 
 // HW: Aruino Nano, MCP2515+TJA1050 CAN module
 
 // version -- if statement for vesc canID and new tacho_buf indexing and timer change to 20 Hz
@@ -41,9 +42,6 @@ void setup() {
   serial_initial();
   CAN_initial();
  
-  CAN_Mask_initial();
-  CAN_filters_initial();
-
   timer1_init();  // setting of timer1
 
   Serial.println("initialization done!");

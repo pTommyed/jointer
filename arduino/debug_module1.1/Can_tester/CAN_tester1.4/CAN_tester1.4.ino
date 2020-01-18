@@ -46,13 +46,9 @@ byte cycle_count = 0;
 void setup() {
   serial_initial();
   CAN_initial();
-  CAN_MASK_initial();
-  //CAN_filter_extended_initial();
-  CAN_filter_initial(); 
   pinout_initial();
   Beep();
   knight_rider_led_test ();
-  //timer1_initial();
   WDT_1s();
   Serial.println(" - initialization successfully done!");
 }
@@ -60,14 +56,8 @@ void setup() {
 /*----------------------- MAIN LOOP ----------------------------------------*/
 
 void loop() {
-
   if (timmer_flag == true) {
-    //Serial.println(timmer_flag);
     timer_service();
-    /*led_reset();
-    detection_missing_module();
-    sending_message_to_apu();
-    missing_module_status_reset();*/
     if (cycle_count == 2) {
       led_reset();
       detection_missing_module();
@@ -99,6 +89,11 @@ void CAN_initial(){
     delay(1000);
   }
   Serial.print("\nCAN init ok!!\r\n");
+
+  for(int i=0;i<3;i++){
+    CAN_MASK_initial();
+    CAN_filter_initial(); 
+  }
 }
 
 /*-----------------------CAN-MASK-initialization--------------------------------*/
@@ -197,7 +192,7 @@ void knight_rider_led_test (){
 
 void CAN_message_received(){
   int can_adress_pom=30;
-  Serial.print( CANmessageID);
+  Serial.print( CANmessageID,HEX);
   Serial.print( ",");
   if ((CANmessageID > 2304) && (CANmessageID < 2311)){
     can_adress_pom = CANmessageID - 2305;

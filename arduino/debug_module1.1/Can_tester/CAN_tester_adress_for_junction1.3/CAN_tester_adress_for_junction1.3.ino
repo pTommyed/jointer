@@ -46,10 +46,15 @@ byte cycle_count = 0;
 void setup() {
   serial_initial();
   CAN_initial();
+  CAN_MASK_initial();
+  for(int i=0;i<3;i++){
+    CAN_MASK_initial();
+    CAN_filter_initial(); 
+  }
   pinout_initial();
   Beep();
   knight_rider_led_test ();
-  WDT_1s();
+  //WDT_1s();
   Serial.println(" - initialization successfully done!");
 }
 
@@ -57,21 +62,6 @@ void setup() {
 
 void loop() {
 
-  if (timmer_flag == true) {
-    //Serial.println(timmer_flag);
-    timer_service();
-    /*led_reset();
-    detection_missing_module();
-    sending_message_to_apu();
-    missing_module_status_reset();*/
-    if (cycle_count == 1) {
-    } else if (cycle_count == 2) {
-              led_reset();
-              detection_missing_module();
-              sending_message_to_apu();
-              missing_module_status_reset();
-             }
-  }
   if(CAN.readMsgBuf(&len, buf)== CAN_OK) {  
     CANmessageID = CAN.getCanId();
     CAN_message_received();
@@ -96,18 +86,13 @@ void CAN_initial(){
     delay(1000);
   }
   Serial.print("\nCAN init ok!!\r\n");
-
-  for(int i=0;i<3;i++){
-    CAN_MASK_initial();
-    CAN_filter_initial(); 
-  }
 }
 
 /*-----------------------CAN-MASK-initialization--------------------------------*/
 void CAN_MASK_initial(){
   
-  CAN.init_Mask(0, 1, 0x1FFFFFF8); // 29 bitů  extended adresa
-  CAN.init_Mask(1, 0, 0x3fc); 
+  CAN.init_Mask(0, 1, 0x1FFFFFF0); // 29 bitů  extended adresa
+  CAN.init_Mask(1, 0, 0x3f0); 
 }
 
 /*-----------------------CAN-filter-initialization--------------------------------*/
@@ -115,10 +100,10 @@ void CAN_filter_initial(){
      
   CAN.init_Filt(0, 1, 0x900); 
   CAN.init_Filt(1, 1, 0x900);
-  CAN.init_Filt(2, 0, 0x00);
-  CAN.init_Filt(3, 0, 0x70);
-  CAN.init_Filt(4, 0, 0x80);
-  CAN.init_Filt(5, 0, 0x00);
+  CAN.init_Filt(2, 0, 0x10);
+  CAN.init_Filt(3, 0, 0x20);
+  CAN.init_Filt(4, 0, 0x30);
+  CAN.init_Filt(5, 0, 0x30);
 }
 
 /*-------------------------- SyrenaUP ------------------------------------------------------------------------------*/
@@ -130,14 +115,6 @@ void Beep () {
   digitalWrite(buzzer_pin, LOW);
 }
 
-/*-------------------------- timer1_initial ------------------------------------------------------------------------------*/
-
-/*void timer1_initial() {
-  
-  Timer1.initialize(1000000); //1Hz//10 Hz freq = 100000
-  Timer1.attachInterrupt(timer_overflow);
-}
-*/
 /*-------------------------- Timer 1 overflow ----------------*/
 
 ISR( WDT_vect ) {
@@ -190,18 +167,14 @@ void CAN_message_received(){
   Serial.print( ",");
   if ((CANmessageID > 2304) && (CANmessageID < 2311)){
     can_adress_pom = CANmessageID - 2305;
-    adress_tabel[can_adress_pom][4]=1;
   }else {
-      if (CANmessageID < 132){
-        if (CANmessageID > 128){
+      if (CANmessageID < 55){
+        if (CANmessageID > 48){
           can_adress_pom = (CANmessageID - 129)+6;
-          adress_tabel[can_adress_pom][4]=1;
-        } else if ((CANmessageID > 112) && (CANmessageID < 115)) {
+        } else if ((CANmessageID > 32) && (CANmessageID < 39)) {
             can_adress_pom = (CANmessageID - 113)+9;
-            adress_tabel[can_adress_pom][4]=1;
-          } else if (CANmessageID == 1){
+          } else if ((CANmessageID > 16) && (CANmessageID < 23)) {
                 can_adress_pom = (CANmessageID - 1)+11;
-                adress_tabel[can_adress_pom][4]=1;
             }
       }    
    }
@@ -209,44 +182,6 @@ void CAN_message_received(){
   Serial.println( ",");
 }
 
-/*------------------------- detection_missing_module -----------------------------------------------------------------------------------*/
-
-void detection_missing_module () {
-  for (int i = 0; i < record_number; i++){
-    if ( adress_tabel[i][4]== 0) {
-      digitalWrite(led_pinout[adress_tabel[i][1]], HIGH);
-       message_to_apu[led_pinout[adress_tabel[i][1]]] = led_pinout[adress_tabel[i][1]]; 
-    } else {
-          message_to_apu[led_pinout[adress_tabel[i][1]]] = 0; 
-      }
-  }
-}
-
-/*----------------------------- missing_module_status_reset -----------------------------------------------------------------------------------------------*/
-
-void missing_module_status_reset() {
-  cycle_count = 0;
-  for (int i = 0; i < record_number; i++){
-    adress_tabel[i][4] = 0;
-     }
-}
-
-/*----------------------------- led_reset -----------------------------------------------------------------------------------------------*/
-
-void led_reset() {
-  for (int i=0; i<led_pinout_count ;i++) {
-      digitalWrite(led_pinout[i],LOW);  
-   }
-}
-
-/*----------------------------- Sending_message_to_apu -----------------------------------------------------------------------------------------------*/
-
-void sending_message_to_apu() {
-  CAN.sendMsgBuf(0x00 + can_adress, 0, message_to_apu_len,  message_to_apu);
-  for (int i=0; i<led_pinout_count ;i++) {
-      message_to_apu[i]=0;  
-   }
-}
 
 /*------------------------ WDT 1 S -----------------------------------------*/
 

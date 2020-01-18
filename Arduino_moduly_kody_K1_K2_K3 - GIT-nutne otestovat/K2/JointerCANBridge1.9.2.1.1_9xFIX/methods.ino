@@ -39,6 +39,11 @@ void CAN_initial(){
     delay(1000);
   }
   Serial.print("\nCAN init ok!!\r\n");
+
+  for (int i=0;i<3;i++){
+    CAN_Mask_initial();
+    CAN_filters_initial();
+  }
 }
 
 /*-----------------------waiting for timer4 overflow--------------------------------*/
@@ -50,17 +55,18 @@ void waiting_for_timer4_overflow(){
 
 /*-----------------------CAN Mask initialization--------------------------------*/
 void CAN_Mask_initial(){
-  CAN.init_Mask(0, 1, 0x0910); //CCAN.init_Mask(0, 1, 0x00000910); //CAN.init_Mask(0, 1, 0x06FF0000);
+  CAN.init_Mask(0, 1, 0x1FFFFFF0); // 29 bitů  extended adresa
+  CAN.init_Mask(1, 0, 0x3f0); 
 }
 
 /*-----------------------CAN filters initialization--------------------------------*/
 void CAN_filters_initial(){
-  CAN.init_Filt(0, 1, 0x00000901);
-  CAN.init_Filt(1, 1, 0x00000902);
-  CAN.init_Filt(2, 1, 0x00000903);
-  CAN.init_Filt(3, 1, 0x00000904);
-  CAN.init_Filt(4, 1, 0x00000905);
-  CAN.init_Filt(5, 1, 0x00000906);
+  CAN.init_Filt(0, 1, 0x900); 
+  CAN.init_Filt(1, 1, 0x900);
+  CAN.init_Filt(2, 0, 0x10);
+  CAN.init_Filt(3, 0, 0x20);
+  CAN.init_Filt(4, 0, 0x30);
+  CAN.init_Filt(5, 0, 0x30);
 }
 /*-----------------------CANmessage print to serial--------------------------------*/
 void CANmsgToSerial(){

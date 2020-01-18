@@ -14,22 +14,27 @@ void CAN_initial(){
     delay(1000);
   }
   Serial.print("\nCAN init ok!!\r\n");
+
+  for (int i=0;i<3;i++){
+    CAN_Mask_initial();
+    CAN_filters_initial();
+  }
 }
 
 /*-----------------------CAN Mask initialization--------------------------------*/
 void CAN_Mask_initial(){
-  CAN.init_Mask(0, 1, 0x03FFFF); //CAN.init_Mask(0, 1, 0x00000600)
-  CAN.init_Mask(1, 1, 0x03FFFF); //CAN.init_Mask(1, 1, 0x00000600)
+  CAN.init_Mask(0, 1, 0x1fffffff); //CAN.init_Mask(0, 1, 0x00000600)
+  CAN.init_Mask(1, 1, 0x1fffffff); //CAN.init_Mask(1, 1, 0x00000600)
 }
 
 /*-----------------------CAN filters initialization--------------------------------*/
 void CAN_filters_initial(){
-  CAN.init_Filt(0, 1, 0x00000501);
-  CAN.init_Filt(1, 1, 0x00000502);
-  CAN.init_Filt(2, 1, 0x00000503);
-  CAN.init_Filt(3, 1, 0x00000504);
-  CAN.init_Filt(4, 1, 0x00000505);
-  CAN.init_Filt(5, 1, 0x00000506);
+  CAN.init_Filt(0, 1, 0x501);
+  CAN.init_Filt(1, 1, 0x502);
+  CAN.init_Filt(2, 1, 0x503);
+  CAN.init_Filt(3, 1, 0x504);
+  CAN.init_Filt(4, 1, 0x505);
+  CAN.init_Filt(5, 1, 0x506);
 }
 
 /*--------------------------- Tacho service----------------------------------------------------------------------------------*/

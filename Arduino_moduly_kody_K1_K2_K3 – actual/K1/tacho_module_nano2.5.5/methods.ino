@@ -1,42 +1,3 @@
-/*-----------------------Serial initialization--------------------------------*/
-void serial_initial(){
-  Serial.begin(250000); 
-  while (!Serial) {
-    ; 
-    }
-}
-
-/*-----------------------CAN initialization--------------------------------*/
-void CAN_initial(){
-  Serial.println("Setup can..");
-  while(CAN.begin(CAN_500KBPS, MCP_8MHz) != CAN_OK){
-    Serial.print(".");
-    delay(1000);
-  }
-  Serial.print("\nCAN init ok!!\r\n");
-
-  for (int i=0;i<3;i++){
-    CAN_Mask_initial();
-    CAN_filters_initial();
-  }
-}
-
-/*-----------------------CAN Mask initialization--------------------------------*/
-void CAN_Mask_initial(){
-  CAN.init_Mask(0, 1, 0x1fffffff); //CAN.init_Mask(0, 1, 0x00000600)
-  CAN.init_Mask(1, 1, 0x1fffffff); //CAN.init_Mask(1, 1, 0x00000600)
-}
-
-/*-----------------------CAN filters initialization--------------------------------*/
-void CAN_filters_initial(){
-  CAN.init_Filt(0, 1, 0x501);
-  CAN.init_Filt(1, 1, 0x502);
-  CAN.init_Filt(2, 1, 0x503);
-  CAN.init_Filt(3, 1, 0x504);
-  CAN.init_Filt(4, 1, 0x504);
-  CAN.init_Filt(5, 1, 0x504);
-}
-
 /*--------------------------- Přijatá zpráva CAN----------------------------------------------------------------------------------*/
 
 void CAN_MESSAGE_ReceiveD(int vesc_id){
@@ -80,6 +41,7 @@ void sending_tacho_request(int vesc_id) {
   int can_id = 2048;
   
   request_buf[0] = CANvescID[vesc_id]; // jeden vesc4x --- CANvescID[0]
+  //Serial.println(request_buf[0]);
   CAN.sendMsgBuf(0x00000+can_id+CANvescID[vesc_id], 1, 3, request_buf); // jeden vesc 4x nahradit ----- CAN.sendMsgBuf(0x00000+can_id+CANvescID[0], 1, 3, request_buf);
 }
 
@@ -92,8 +54,10 @@ void create_tacho_buf_apu(int vesc_id) {
   
   for (j=0;j<2;j++){
     i=i-j;
+    //Serial.print(buf_position - j);
     tacho_buf[buf_position - j] =buf[i];
   }
+  //Serial.println("");
 }
 
 /*-------------------------- initialize timer1 ------------------------------------------*/
@@ -109,3 +73,4 @@ void timer1_init() {
   TIMSK1 |= (1 << TOIE1);   // enable timer overflow interrupt
   interrupts();             // enable all interrupts
 }
+

@@ -14,6 +14,11 @@ void CAN_initial(){
     delay(1000);
   }
   Serial.print("\nCAN init ok!!\r\n");
+
+  for (int i=0;i<3;i++){
+    CAN_Mask_initial();
+    CAN_filters_initial();
+  }
 }
 
 /*-----------------------CAN Mask initialization--------------------------------*/
