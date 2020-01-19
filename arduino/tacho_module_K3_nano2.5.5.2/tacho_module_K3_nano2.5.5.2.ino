@@ -42,9 +42,6 @@ void setup() {
   serial_initial();
   CAN_initial();
  
-  CAN_Mask_initial();
-  CAN_filters_initial();
-
   timer1_init();  // setting of timer1
 
   Serial.println("initialization done!");
