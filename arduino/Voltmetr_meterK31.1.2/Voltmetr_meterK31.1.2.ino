@@ -1,7 +1,7 @@
 //####################################################
 //#    KLOUBAK: Voltage_angle_measuring_module (Voltmetr_meterK31.1)
 //#    Copyright (c) 2019 ROBOTIKA
-//#    programmed by: Tomas Picha
+//#    programmed by: Tomas Picha, Jan Kaderabek
 //####################################################
 
 // DESCRTIPTION: -  version for K3 robot 
