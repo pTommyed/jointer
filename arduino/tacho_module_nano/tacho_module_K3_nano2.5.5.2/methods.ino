@@ -111,7 +111,7 @@ void create_tacho_buf_apu(int vesc_id) {
     if (vesc_id == 1) {
       tacho_buf[2] = buf[6];   // left motor tacho info
       tacho_buf[3] = buf[7];   // left motor tacho info
-    } else {
+    } else if (vesc_id == 2) {
          tacho_buf[4] = buf[6];   // right motor tacho info
          tacho_buf[5] = buf[7];   // right motor tacho info
       }
@@ -120,7 +120,7 @@ void create_tacho_buf_apu(int vesc_id) {
       if (vesc_id == 3) {
         tacho_buf[2] = buf[6];   // left motor tacho info
         tacho_buf[3] = buf[7];   // left motor tacho info
-      } else {
+      } else if (vesc_id == 4) {
            tacho_buf[4] = buf[6];   // right motor tacho info
            tacho_buf[5] = buf[7];   // right motor tacho info
         }
@@ -129,7 +129,7 @@ void create_tacho_buf_apu(int vesc_id) {
       if (vesc_id == 5) {
         tacho_buf[2] = buf[6];   // left motor tacho info
         tacho_buf[3] = buf[7];   // left motor tacho info
-      } else {
+      } else if(vesc_id == 6) {
            tacho_buf[4] = buf[6];   // right motor tacho info
            tacho_buf[5] = buf[7];   // right motor tacho info
         }
