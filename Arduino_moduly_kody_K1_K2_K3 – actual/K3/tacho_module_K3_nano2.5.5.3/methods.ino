@@ -106,30 +106,30 @@ void sending_tacho_apu(int vesc_id) {
 void create_tacho_buf_apu(int vesc_id) {
   
   tacho_buf[0] = cycle_count;
-  if (vesc_id < 3) {
+  if (CANvescID[vesc_id] < 3) {
     tacho_buf[1] = 1; // index of vescs pair
-    if (vesc_id == 1) {
+    if (CANvescID[vesc_id]== 1) {
       tacho_buf[2] = buf[6];   // left motor tacho info
       tacho_buf[3] = buf[7];   // left motor tacho info
-    } else if (vesc_id == 2) {
+    } else if (CANvescID[vesc_id] == 2) {
          tacho_buf[4] = buf[6];   // right motor tacho info
          tacho_buf[5] = buf[7];   // right motor tacho info
       }
-  } else if (vesc_id < 5) {
+  } else if (CANvescID[vesc_id] < 5) {
       tacho_buf[1] = 2; // index of vescs pair
-      if (vesc_id == 3) {
+      if (CANvescID[vesc_id] == 3) {
         tacho_buf[2] = buf[6];   // left motor tacho info
         tacho_buf[3] = buf[7];   // left motor tacho info
-      } else if (vesc_id == 4) {
+      } else if (CANvescID[vesc_id] == 4) {
            tacho_buf[4] = buf[6];   // right motor tacho info
            tacho_buf[5] = buf[7];   // right motor tacho info
         }
   } else {
       tacho_buf[1] = 3; // index of vescs pair
-      if (vesc_id == 5) {
+      if (CANvescID[vesc_id] == 5) {
         tacho_buf[2] = buf[6];   // left motor tacho info
         tacho_buf[3] = buf[7];   // left motor tacho info
-      } else if(vesc_id == 6) {
+      } else if(CANvescID[vesc_id] == 6) {
            tacho_buf[4] = buf[6];   // right motor tacho info
            tacho_buf[5] = buf[7];   // right motor tacho info
         }
