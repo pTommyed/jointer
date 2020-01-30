@@ -10,7 +10,7 @@ void serial_initial(){
 void i2c_initial()
 {
   Wire.begin();
-  Wire.setClock(400000); // use 400 kHz I2C
+  Wire.setClock(100000); // use 100 kHz I2C
 }
 
 /*--------------------- Sensor VL53L1X-initialization------------------------*/

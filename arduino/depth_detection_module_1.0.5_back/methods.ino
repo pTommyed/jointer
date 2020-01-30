@@ -10,7 +10,21 @@ void serial_initial(){
 void i2c_initial()
 {
   Wire.begin();
-  Wire.setClock(400000); // use 400 kHz I2C
+  Wire.setClock(100000); // use 100 kHz I2C
+}
+
+/*-----------------------I2C-off-----------------------------------*/
+void i2c_off()
+{
+  //TWCR = TWCR & 0xFB;
+  TWCR = TWCR & 0x00;
+}
+
+/*-----------------------I2C-on-----------------------------------*/
+void i2c_on()
+{
+  //TWCR = TWCR | 0x04;
+  TWCR = TWCR | 0x45; //1000101
 }
 
 /*--------------------- Sensor VL53L1X-initialization------------------------*/
@@ -47,8 +61,8 @@ void VL53L1X_initial()
   // information on range and timing limits.
   sensor_A.setDistanceMode(VL53L1X::Long);
   sensor_B.setDistanceMode(VL53L1X::Long);
-  sensor_A.setMeasurementTimingBudget(30000); //28185
-  sensor_B.setMeasurementTimingBudget(30000); //28185
+  sensor_A.setMeasurementTimingBudget(21185); //28185 ; default 30000
+  sensor_B.setMeasurementTimingBudget(21185); //28185 ; default 30000
 
   // Start continuous readings at a rate of one measurement every 50 ms (the
   // inter-measurement period). This period should be at least as long as the
@@ -135,5 +149,18 @@ void distance_message(){
   buf_distance[0] = (distance_B >> 8) & 0xFF;
   buf_distance[1] = distance_B & 0xFF;
 
+}
+
+/*---------------------------- Serial púrint data ------------------------------------------------------------------*/
+
+void serial_data_print (){
+  Serial.print("Senzor B: ");
+  for (int i=0; i<8; i++) {
+    if (i==2) {
+      Serial.print("Senzor A: ");
+    }
+    Serial.print(buf_distance[i]);
+  }
+  Serial.println("");
 }
 
