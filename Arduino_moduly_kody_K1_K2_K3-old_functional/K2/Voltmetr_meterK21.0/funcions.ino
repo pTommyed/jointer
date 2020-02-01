@@ -104,7 +104,7 @@ unsigned int resistance = 0;
   }
 
   /*Serial.print(" ");
-  Serial.println(resistance);
-  return(resistance);*/
+  Serial.println(resistance);*/
+  return(resistance);
 }
 

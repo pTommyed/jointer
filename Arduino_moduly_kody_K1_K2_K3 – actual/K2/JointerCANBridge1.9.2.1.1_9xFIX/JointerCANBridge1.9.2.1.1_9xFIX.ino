@@ -6,10 +6,10 @@
 
 
 // DESCRTIPTION: -  version for K2 and K3 robots 
-//               -  no tested
 //               -  20 Hz - sampling frequency 
 //               -  version without incoming message buffer and translation realized by address subtraction
 //               -  version with changed CountCycle()
+//               -  change CAN masks and filters setting 
 // HW: Aruino Due, MCP2515+TJA1050 CAN module
 
 //########################################################################################################

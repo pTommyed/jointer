@@ -95,10 +95,10 @@ void resistance_message(){
   for (int i=0;i<4;i++){
     buf_resistance[i]= resist / power(ground,(3-i));
     resist = resist - (buf_resistance[i] * power(ground,(3-i)));
-    /*Serial.print(" ");
+    Serial.print(" ");
     Serial.print(power(ground,(3-i)));
     Serial.print(" ");
-    Serial.print(buf_resistance[i]);*/
+    Serial.print(buf_resistance[i]);
   }
 }
 
@@ -129,8 +129,8 @@ unsigned int resistance = 0;
   }
 
   /*Serial.print(" ");
-  Serial.println(resistance);
-  return(resistance);*/
+  Serial.println(resistance);*/
+  return(resistance);
 }
 
 /*-------------------- voltage measurement -----------------------------------------------------------------*/
@@ -152,7 +152,10 @@ void angle_measurement (){
 /*-------------------- CAN messages sending -----------------------------------------------------------------*/
 
 void CAN_messages_sending () {
+  delayMicroseconds(20);
   CAN.sendMsgBuf(0x00 + can_adress_voltage12, 0, 4, buf_voltage12);
+  delayMicroseconds(20);
   CAN.sendMsgBuf(0x00 + can_adress_voltage36, 0, 4, buf_voltage36);
+  delayMicroseconds(20);
   CAN.sendMsgBuf(0x00 + can_adress_resistance, 0, 4, buf_resistance);
 }
