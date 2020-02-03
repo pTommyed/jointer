@@ -1,0 +1,112 @@
+login as: root
+root@10.1.10.20's password: alix1corp2
+
+The programs included with the Debian GNU/Linux system are free software;
+the exact distribution terms for each program are described in the
+individual files in /usr/share/doc/*/copyright.
+
+Debian GNU/Linux comes with ABSOLUTELY NO WARRANTY, to the extent
+permitted by applicable law.
+ __  __
+ \ \/ /___ __  __ ___  ___  ___    Useful Commands:
+  \  // _ \\ \/ /,-_ |/ _ |/ -_)     remountrw - mount disk as read-write
+   \/ \___/ \  / \___,\_  |\___|     remountro - mount disk as read-only
+           _/_/        _'_|          remove.docs - remove all docs and manpages
+     { V o y a g e } - L i n u x
+      < http://linux.voyage.hk >   Version: 0.11.0 (Build Date 20170122)
+
+Last login: Tue Oct 29 13:29:44 2019 from lenovo2
+(base) root@voyage:~# source start.sh
+    self.update()
+  File "/home/robot/git/osgar/osgar/go.py", line 24, in update
+    channel = super().update()  # define self.time
+  File "/home/robot/git/osgar/osgar/node.py", line 32, in update
+    timestamp, channel, data = self.bus.listen()
+  File "/home/robot/git/osgar/osgar/bus.py", line 66, in listen
+    raise BusShutdownException()
+osgar.bus.BusShutdownException
+
+(base) root@voyage:/home/robot/git/osgar#  osgar.go run config/kloubak-slot.json -s 0.2 --note "stairs module, na palete, vidi nejdal"
+Namespace(command='run', config=['config/kloubak-slot.json'], dist=1.0, note='stairs module, na palete, vidi nejdal', speed=0.2, timeout=10)
+0:00:00.120721 Go!
+Emergency STOP: False
+^CException in thread Thread-1:
+Traceback (most recent call last):
+  File "/root/miniconda3/lib/python3.7/threading.py", line 917, in _bootstrap_inner
+    self.run()
+  File "/home/robot/git/osgar/osgar/go.py", line 50, in run
+    self.update()
+  File "/home/robot/git/osgar/osgar/go.py", line 24, in update
+    channel = super().update()  # define self.time
+  File "/home/robot/git/osgar/osgar/node.py", line 32, in update
+    timestamp, channel, data = self.bus.listen()
+  File "/home/robot/git/osgar/osgar/bus.py", line 66, in listen
+    raise BusShutdownException()
+osgar.bus.BusShutdownException
+
+(base) root@voyage:/home/robot/git/osgar# python -m osgar.go run config/kloubak3-no-sensors.json -s 0.2 -d 0.1  --note "prvni test po rozebrani robota -- novy kod klouby, tachometry,only encoder2,na krabici"(base) root@voyage:/home/robot/git/osgar# python -m osgar.go run config/kloubak3-no-sensors.json -s 0.2 -d 0.1  --note "prvni test po rozebrani robota -- novy kod klouby, tachometry,only encoder2,na krabici" # ujede 0.1 m rychlostí 0.2
+
+(base) root@voyage:/home/robot/git/osgar# python -m osgar.replay --module kloubak logs/go-kloubak3-no-sensors-200111_095231.log -F   # pøehraní logù parametr -F je force
+
+(base) root@voyage:/home/robot/git/osgar# python -m osgar.replay --module kloubak logs/go-kloubak3-no-sensors-200111_095231.log  # pøehrání logù
+
+(base) root@voyage:/home/robot/git/osgar# #python -m osgar.go run -h  # -h nápovìda
+
+ (base) root@voyage:/home/robot/git/osgar# python -m osgar.replay --module kloubak logs/go-kloubak3-no-sensors-200111_095231.log (base) root@voyage:/home/robot/git/osgar# python -m osgar.replay --module kloubak logs/go-kloubak3-no-sensors-200111_095231.log # pøehrání logu
+ 
+ (base) root@voyage:/home/robot/git/osgar# ls logs  # ls seznam
+ 
+ pokud se odloguju a znovu pøipojím, bez vypnutí apu tak pøihlásit a  screen -dr
+
+ (base) root@voyage:/home/robot/git/osgar#  python -m osgar.replay --module kloubak logs/go-kloubak3-no-sensors-200111_140234.log > tmp.txt     # pøesmerovani s konzole do txt sobouru
+
+(base) root@voyage:/home/robot/git/osgar# less tmp1.txt    # následné pøepnutí do pøesmerovaného txt souboru 
+q -- návrat s pøesmìrování
+
+(base) root@voyage:/home/robot/git/osgar# python -m osgar.logger --stat logs/go-kloubak3-no-sensors-200111_164654.log  # ststistika komunikace 
+
+python -m osgar.record config/test-pcan.json   # logování s p-canu
+
+cd .. (osgar - složka -> skript (jedinej skript zde)) pustím -- python jméno toho souboru --- python sys_logging.py # logování dmsg  
+
+ctr+a+c #nový screen               
+trl+a+n #pøepínaní branch
+screen -dr #
+git branch # 
+git checkout jméno požadované vìtve # pøepínání mezi vìtvemi
+git status  #
+git branch -a #všechny brance
+
+python -m subt run config/kloubak3-subt-estop-lora.json --side left  --note "test3 Junction"       # subt
+
+screen -r # pøepnout screen           
+
+(base) root@voyage:/home/robot/git/osgar# python -m osgar.go run config/kloubak-slot.json -s 0.2 --note "stairs module, na palete, vidi nakratko"
+Namespace(command='run', config=['config/kloubak-slot.json'], dist=1.0, note='stairs module, na palete, vidi nakratko', speed=0.2, timeout=10)
+0:00:00.105881 Go!
+Emergency STOP: False
+^CException in thread Thread-1:
+Traceback (most recent call last):
+  File "/root/miniconda3/lib/python3.7/threading.py", line 917, in _bootstrap_inner
+    self.run()
+  File "/home/robot/git/osgar/osgar/go.py", line 50, in run
+    self.update()
+  File "/home/robot/git/osgar/osgar/go.py", line 24, in update
+    channel = super().update()  # define self.time
+  File "/home/robot/git/osgar/osgar/node.py", line 32, in update
+    timestamp, channel, data = self.bus.listen()
+  File "/home/robot/git/osgar/osgar/bus.py", line 66, in listen
+    raise BusShutdownException()
+osgar.bus.BusShutdownException
+
+(base) root@voyage:/home/robot/git/osgar# /root/end.sh
+
+
+analýza logù výpis zpráv s canu:
+git clone osgar
+anaconda promt:
+cd "...osgar\"
+python -m osgar.logger cesta_k_logu.log --stream can.can --format "{stream_id};{sec};{data[0]};{data[1].hex()}" > K3_can_1.csv
+
+copy folder: "\Projekt_ROBOTIKA\logs\analyzer\"
+editt: " K-analyzer.py" -> "pcan_file"
