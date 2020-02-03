@@ -128,6 +128,7 @@ unsigned int resistance = 0;
     resistance = resistance + analogRead(pin);
   }
 
+  resistance  = resistance  / 16;
   /*Serial.print(" ");
   Serial.println(resistance);*/
   return(resistance);

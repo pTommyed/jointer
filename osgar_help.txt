@@ -72,12 +72,18 @@ cd .. (osgar - složka -> skript (jedinej skript zde)) pustím -- python jméno toh
 ctr+a+c #nový screen               
 trl+a+n #pøepínaní branch
 screen -dr #
+
 git branch # 
 git checkout jméno požadované vìtve # pøepínání mezi vìtvemi
 git status  #
 git branch -a #všechny brance
+git checkout feature/kloubak2-rs-config # pøepnout na požadovanou vìtev
+
 
 python -m subt run config/kloubak3-subt-estop-lora.json --side left  --note "test3 Junction"       # subt
+
+python -m subt run config/kloubak2-subt-estop-lora.json --side right --note "jizda po chodbe s realsense"
+
 
 screen -r # pøepnout screen           
 

@@ -5,10 +5,10 @@
 //####################################################
 
 // DESCRTIPTION: -  version for K2 robot 
-//               -  no tested after refactoring 
 //               -  20 Hz - sampling frequency
 //               -  module measure voltage - 12, 36V and angle of rotation (analog value)
 //               -  only refactoring of version - Voltmetr_meterK21.0
+//               -  add CAN delays 20 micros (testing)
 // HW: Aruino Nano, DOPSAT NAZEV SENZORU PRO MERENI UHLU, MCP2515+TJA1050 CAN module
 
 /*----------------------- DEPENDENCES ----------------------------------*/
