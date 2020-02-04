@@ -1,5 +1,5 @@
 //####################################################
-//#    KLOUBAK: Depth-detection Module 1.0.4_back
+//#    KLOUBAK: Depth-detection Module 1.0.5_front
 //#    Copyright (c) 2019 ROBOTIKA
 //#    programmed by: Tomas Picha, Jan Kaderabek
 //####################################################
@@ -32,7 +32,7 @@ MCP_CAN CAN(10);
 unsigned int CANmessageID;
 unsigned char len = 0;
 byte buf_distance[4]={0,0,0,0};
-int can_adress_distance = 114; //72 hexa  
+int can_adress_distance = 113; //71 hexa  
 
 bool timmer_flag = false;
 int preload_timer = 62411;// preload timer 65536-16MHz/256/5Hz --- 256 is prescaler; 65563 - 16 bit counter(Timer1); 20Hz - requiered frequency --- 62411 ; 10 hz = 59286; 5hz =53036 ; 2hz=34286
@@ -45,7 +45,7 @@ void setup(){
   i2c_scanner();
   CAN_initial();
   timer1_init();  // setting of timer1
-  wdt_enable(WDTO_60MS);  //wdt reset 60ms ; 120MS
+  wdt_enable(WDTO_120MS);  //wdt reset 60ms ; 120MS
   Serial.println(" - initialization successfully done!");
 }
 
@@ -65,4 +65,3 @@ void loop(){
     sensor_B.startContinuous(30);
   }
 }
-

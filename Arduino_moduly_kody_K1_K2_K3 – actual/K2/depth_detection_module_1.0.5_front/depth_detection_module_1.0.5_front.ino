@@ -1,5 +1,5 @@
 //####################################################
-//#    KLOUBAK: Depth-detection Module 1.0.4_front
+//#    KLOUBAK: Depth-detection Module 1.0.5_front
 //#    Copyright (c) 2019 ROBOTIKA
 //#    programmed by: Tomas Picha, Jan Kaderabek
 //####################################################
@@ -45,7 +45,7 @@ void setup(){
   i2c_scanner();
   CAN_initial();
   timer1_init();  // setting of timer1
-  wdt_enable(WDTO_60MS);  //wdt reset 60ms ; 120MS
+  wdt_enable(WDTO_120MS);  //wdt reset 60ms ; 120MS
   Serial.println(" - initialization successfully done!");
 }
 
@@ -65,4 +65,3 @@ void loop(){
     sensor_B.startContinuous(30);
   }
 }
-
