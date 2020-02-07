@@ -1,0 +1,31 @@
+ WDT_MR -- > WDRPROC   -- WDRPROC is 0, the Processor Reset and the Peripheral Reset are asserted
+                       -- If WDRPROC = 1, only the processor reset is asserted
+ 
+ RSTTYP -- > Reset Type  -- Reports the cause of the last processor reset. Reading this RSTC_SR does not reset this field.                     
+
+ URSTEN: User Reset Enable
+0: The detection of a low level on the pin NRST does not generate a User Reset.
+1: The detection of a low level on the pin NRST triggers a User Reset.
+
+ URSTIEN: User Reset Interrupt Enable
+0: USRTS bit in RSTC_SR at 1 has no effect on rstc_irq.
+1: USRTS bit in RSTC_SR at 1 asserts rstc_irq if URSTEN = 0
+
+
+
+Nastavení WDT: tyto 3 registry:
+
+    WDT_CR -- Control Register
+    WDT_MR -- Mode Register
+    WDT_SR -- Status Register
+    
+    WDT_CR -- Watchdog Timer Control Register -- > WDRSTT: Watchdog Restart - 1: Restarts the Watchdog
+    WDT_MR -- Watchdog Timer Mode Register -- >  • WDRSTEN:  Watchdog Reset Enable - 1: A Watchdog fault (underflow or error) triggers a Watchdog reset 
+                                           -- >     WDRPROC: Watchdog Reset Processor  -  1: a Watchdog fault (underflow or error) activates the processor reset
+                                           -- >    WDDIS: Watchdog Disable - 0: Enables the Watchdog Timer
+                                                                           - 1: Disables the Watchdog Timer
+                                           -- >     WDD: Watchdog Delta Value Defines the permitted range for reloading the Watchdog Timer.
+                                                                    -If the Watchdog Timer value is less than or equal to WDD, writing WDT_CR with WDRSTT = 1 restarts the timer.
+                                                                    -If the Watchdog Timer value is greater than WDD, writing WDT_CR with WDRSTT = 1 causes a Watchdog error
+    
+    WDT_SR -- Watchdog Timer Status Register -- read only
