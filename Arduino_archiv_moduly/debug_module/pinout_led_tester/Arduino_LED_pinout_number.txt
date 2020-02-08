@@ -1,0 +1,12 @@
+Poøadí LED od STOP_TLAÈÍTKA       Arduino_pin_number    device
+            1                            7               vesc_1,2
+            2                            6               vesc_3,4
+            3                            4               vesc_5,6
+            4                            3               junction_modul
+            5                            5               voltage_anglw_modul
+            6                            9               down_drop_m_front
+            7                            2               down_drop_m_back
+            8                            8               tacho_modul
+            
+            
+            BUZZER                       17
