@@ -5,11 +5,14 @@
 //####################################################
 
 
-// DESCRTIPTION: -  version for K2 and K3 robots 
+// DESCRTIPTION: -  version for K2 and K3 robots
+//               -  difference between K2 and K3 is in two led pins - K2 : - stop_led = 10;  // RED
+//                                                                         - ledPin = 11;    // GREEN
+//                                                                  - K3 : - stop_led = 11;  // RED
+//                                                                         - ledPin = 10;    // GREEN
 //               -  20 Hz - sampling frequency 
 //               -  version without incoming message buffer and translation realized by address subtraction
 //               -  version with changed CountCycle()
-//               -  change CAN masks and filters setting 
 // HW: Aruino Due, MCP2515+TJA1050 CAN module
 
 //########################################################################################################
@@ -55,9 +58,9 @@
 #include <DueTimer.h>
 
 /*----------------------- DEFINITION -----------------------------------*/
-const int stop_led = 10;  // RED
+const int stop_led = 11;  // RED
 const int break_led = 12; // BLUE
-const int ledPin = 11;    // GREEN
+const int ledPin = 10;    // GREEN
 const int Syrena = 8;
 
 //byte stop_xbee = 22;

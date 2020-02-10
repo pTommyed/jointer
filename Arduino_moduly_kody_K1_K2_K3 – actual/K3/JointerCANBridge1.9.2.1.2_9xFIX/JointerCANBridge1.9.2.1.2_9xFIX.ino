@@ -1,15 +1,20 @@
 //####################################################
-//#    KLOUBAK: JointerCANBridge1.9.2.1.1_9xFIX
+//#    KLOUBAK: JointerCANBridge1.9.2.1.2_9xFIX
 //#    Copyright (c) 2019 ROBOTIKA
 //#    programmed by: Tomas Picha, Jan Kaderabek
 //####################################################
 
 
 // DESCRTIPTION: -  version for K2 and K3 robots 
-//               -  no tested
+//               -  difference between K2 and K3 is in two led pins - K2 : - stop_led = 10;  // RED
+//                                                                         - ledPin = 11;    // GREEN
+//                                                                  - K3 : - stop_led = 11;  // RED
+//                                                                         - ledPin = 10;    // GREEN
 //               -  20 Hz - sampling frequency 
 //               -  version without incoming message buffer and translation realized by address subtraction
 //               -  version with changed CountCycle()
+//               -  change CAN masks and filters setting 
+//               -  add watchdog
 // HW: Aruino Due, MCP2515+TJA1050 CAN module
 
 //########################################################################################################
@@ -54,6 +59,11 @@
 #include <mcp_can.h>
 #include <DueTimer.h>
 
+#define WDT_KEY (0xA5) /*KEY: Password -- Should be written at value 0xA5. 
+                         Writing any other value in this field aborts the write operation */
+
+void watchdogSetup(void) {/*** watchdogDisable (); ***/}
+
 /*----------------------- DEFINITION -----------------------------------*/
 const int stop_led = 11;  // RED
 const int break_led = 12; // BLUE
@@ -92,16 +102,12 @@ void setup() {
   
   ButtonRead();
   brake_button_read();
-
   timer3_4_initial();
-   
   CAN_initial();
-  
   LEDIndicator ();
   BeepUP();
-   
   waiting_for_timer4_overflow();
-
+  wdt_initial();
   Timer3.start(50000); // Calls every 50 mikros (20 Hz)
 }
 
@@ -117,6 +123,7 @@ void loop() {
       STOP();
     }
     Timer3Over = false;
+    wdt_reset();
   }
   
   if(CAN_MSGAVAIL == CAN.checkReceive()) {  
