@@ -10,6 +10,7 @@
 // HW: Aruino nano, current probe ACS712 20 A, relay
 
 /*----------------------- DEPENDENCES ----------------------------------*/
+#include <TimerOne.h>
 #include <stdint.h> //due to wdt
 #include <avr/wdt.h> // wdt lib
 #include <TM74HC595Display.h> // 4bitov display
@@ -32,7 +33,7 @@ float r1 = 680300.0;  //value of resistance of resistor in voltage divider
 float r2 = 68100.0; //value of resistance of resistor in voltage divider
 
 float voltage = 0;
-float voltage_max_limit = 42.2; //V
+float voltage_max_limit = 42.1; //V
 
 float current = 0;
 float current_max_limit =4.2; //A
@@ -48,7 +49,7 @@ void setup() {
    serial_initial();
    characters_table_for_display();
    display_init();
-   timer1_init();
+   timer_init();
    charging();
    wdt_enable(WDTO_4S);  //wdt reset 60ms ; 120MS ; 250MS ; 500MS ; 1S ; 2S ; 4S ; 8s ;
    Serial.println("initialization successfully done!");

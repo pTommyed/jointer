@@ -28,22 +28,14 @@ void buzzer_beep(){
 
 /*-------------------------- initialize timer1 ------------------------------------------*/
 
-void timer1_init() {
-  noInterrupts();
-  
-  TCCR1A = 0;
-  TCCR1B = 0;
-
-  TCNT1 = preload_timer;            // preload timer 65536-16MHz/256/20Hz
-  TCCR1B |= (1 << CS12);    // 256 prescaler 
-  TIMSK1 |= (1 << TOIE1);   // enable timer overflow interrupt
-  interrupts();             // enable all interrupts
+void timer_init() {
+  Timer1.initialize(1000000);
+  Timer1.attachInterrupt(timer1_oveflow); // blinkLED to run every 1.0 seconds
 }
 
 /*-------------------------- timer1 overflow ----------------*/
 
-ISR(TIMER1_OVF_vect)  {
-  TCNT1 = preload_timer;
+void timer1_oveflow (void) {
   wdt_reset (); // Reset watchdog counter
   voltage = voltage_meassure (voltage_pin,r1,r2);
   current = current_meassure (current_pin);
