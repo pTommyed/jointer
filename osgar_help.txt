@@ -116,3 +116,7 @@ python -m osgar.logger cesta_k_logu.log --stream can.can --format "{stream_id};{
 
 copy folder: "\Projekt_ROBOTIKA\logs\analyzer\"
 editt: " K-analyzer.py" -> "pcan_file"
+
+
+jetson - end --- ssh k3jetson --> sudo shutdown now
+
